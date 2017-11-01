@@ -1,0 +1,16 @@
+{
+  "name": "types-themepark",
+  "version": "1.0.0",
+  "repository": "https://github.com/JonJam/types-themepark.git",
+  "license": "MIT",
+  "types": "types",
+  "devDependencies": {
+    "dtslint": "^0.2.0"
+  },
+  "scripts": {
+    "dtslint": "dtslint types"
+  },
+  "dependencies": {
+    "themeparks": "^4.6.1"
+  }
+}
