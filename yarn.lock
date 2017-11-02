@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@types/moment@^2.13.0":
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/@types/moment/-/moment-2.13.0.tgz#604ebd189bc3bc34a1548689404e61a2a4aac896"
+  dependencies:
+    moment "*"
+
 "@types/parsimmon@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@types/parsimmon/-/parsimmon-1.3.0.tgz#0509b11d85e7d10f83141e5d4490ba8ad5e5cbec"
@@ -183,6 +189,10 @@ minimatch@^3.0.4:
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   dependencies:
     brace-expansion "^1.1.7"
+
+moment@*, moment@^2.19.1:
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
 
 mz@^2.6.0:
   version "2.7.0"

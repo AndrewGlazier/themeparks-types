@@ -3,6 +3,8 @@
 // Definitions by: Jonathan Harrison <https://github.com/JonJam>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
+import * as moment from "moment";
+
 export = themeparks;
 
 type ParkClass = typeof Park;
@@ -186,36 +188,36 @@ declare class Schedule {
     fromJSON : (scheduleData: ScheduleData2) => void;
 
     SetDate: ({
-        date? : Moment | string;
-        openingTime? : Moment | string;
-        closingTime? : Moment | string;
+        date? : moment.Moment | string;
+        openingTime? : moment.Moment | string;
+        closingTime? : moment.Moment | string;
         specialHours? : boolean;
         type? : string; 
     }) => boolean;
 
     SetRange: ({
-        startDate? : Moment | string;
-        endDate ? : Moment | string;
-        openingTime? : Moment | string;
-        closingTime? : Moment | string;
+        startDate? : moment.Moment | string;
+        endDate ? : moment.Moment | string;
+        openingTime? : moment.Moment | string;
+        closingTime? : moment.Moment | string;
         specialHours ? : boolean;
         type? : string; 
     }) => boolean;
 
     GetDate: ({
-        date? : Moment | string;
+        date? : moment.Moment | string;
     }) => ScheduleData;
 
     GetDateRange: ({
-        startDate? : Moment | string;
-        endDate? : Moment | string;
+        startDate? : moment.Moment | string;
+        endDate? : moment.Moment | string;
     }) => ScheduleData;
 }
 
 declare interface ScheduleData {
-    date : Moment;
-    openingTime : Moment;
-    closingTime : Moment;
+    date : moment.Moment;
+    openingTime : moment.Moment;
+    closingTime : moment.Moment;
     type : string; 
     special: ;
 }

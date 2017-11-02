@@ -5,9 +5,13 @@
   "license": "MIT",
   "types": "types",
   "devDependencies": {
+    "@types/moment": "^2.13.0",
     "dtslint": "^0.2.0"
   },
   "scripts": {
     "dtslint": "dtslint types/themeparks"
+  },
+  "dependencies": {
+    "moment": "^2.19.1"
   }
 }
