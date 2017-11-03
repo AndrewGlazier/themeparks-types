@@ -5,12 +5,12 @@
 
 import * as moment from "moment";
 
-// TODO Test this all
+// TODO Test this all and compare against JS.
 
 export = themeparks;
 
 type ParkClass = typeof Park;
-type WaitTimesResult = Ride[] | null;
+type WaitTimesResult = RideData[];
 type OpeningTimesResult = ScheduleData[] | null;
 
 declare const themeparks: {
@@ -69,6 +69,7 @@ declare const themeparks: {
     WaltDisneyWorldHollywoodStudios: ParkClass;
     WaltDisneyWorldMagicKingdom: ParkClass;
   };
+  // TODO type settings
   Settings: {
     Cache: {
       del: any;
@@ -284,19 +285,19 @@ declare class Ride {
 }
 
 declare interface RideData {
-  id: string;
+  id: string | number;
   name: string;
   active: boolean;
   waitTime: number;
   fastPass: boolean;
   lastUpdate: number | undefined;
   status: RideStatus;
+  schedule: ScheduleData;
   fastPassReturnTime?: {
     startTime: string;
     endTime: string;
     lastUpdate: number | undefined;
   };
-  schedule: ScheduleData;
 }
 
 declare enum RideStatus {
