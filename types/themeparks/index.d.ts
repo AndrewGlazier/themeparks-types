@@ -213,7 +213,7 @@ declare class Schedule {
       openingTime?: moment.Moment | string;
       closingTime?: moment.Moment | string;
       specialHours?: boolean;
-      type?: string;
+      type?: ScheduleType;
     }
   ) => boolean;
 
@@ -224,7 +224,7 @@ declare class Schedule {
       openingTime?: moment.Moment | string;
       closingTime?: moment.Moment | string;
       specialHours?: boolean;
-      type?: string;
+      type?: ScheduleType;
     }
   ) => boolean;
 
@@ -251,7 +251,7 @@ declare interface ScheduleData {
   date: moment.Moment;
   openingTime: moment.Moment;
   closingTime: moment.Moment;
-  type: string;
+  type: ScheduleType;
   special?: SpecialScheduleData[];
 }
 
@@ -305,4 +305,9 @@ declare enum RideStatus {
   "Down",
   "Closed",
   "Refurbishment"
+}
+
+declare enum ScheduleType {
+  "Operating",
+  "Closed"
 }
