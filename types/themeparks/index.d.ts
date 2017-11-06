@@ -4,14 +4,25 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 import * as moment from "moment";
-
-// TODO Test this all and compare against JS.
+import cacheManger = require("cache-manager");
 
 export = themeparks;
 
 type ParkClass = typeof Park;
 type WaitTimesResult = RideData[];
-type OpeningTimesResult = ScheduleData[] | null;
+type OpeningTimesResult = ScheduleData[];
+
+declare enum RideStatus {
+  "Operating",
+  "Down",
+  "Closed",
+  "Refurbishment"
+}
+
+declare enum ScheduleType {
+  "Operating",
+  "Closed"
+}
 
 declare const themeparks: {
   AllParks: ParkClass[];
@@ -69,37 +80,20 @@ declare const themeparks: {
     WaltDisneyWorldHollywoodStudios: ParkClass;
     WaltDisneyWorldMagicKingdom: ParkClass;
   };
-  // TODO type settings
   Settings: {
-    Cache: {
-      del: any;
-      get: any;
-      ignoreCacheErrors: boolean;
-      keys: any;
-      reset: any;
-      set: any;
-      store: {
-        del: any;
-        get: any;
-        keys: any;
-        name: string;
-        reset: any;
-        set: any;
-        usePromises: boolean;
-      };
-      wrap: any;
-    };
+    // This is an implementation of Cache from cache-manager.
+    Cache: any;
     DefaultCacheOpeningTimesLength: number;
     DefaultCacheWaitTimesLength: number;
     DefaultDateFormat: string;
     DefaultOpenTimeout: number;
     DefaultParkName: string;
-    DefaultParkTimeFormat: any;
+    DefaultParkTimeFormat: string | null;
     DefaultParkTimezone: string;
     DefaultReadTimeout: number;
     DefaultScheduleDays: number;
     DefaultTimeFormat: string;
-    ProxyURL: any;
+    ProxyURL: string | null;
   };
 };
 
@@ -144,31 +138,29 @@ declare class Park {
     }
   ) => string;
 
+  // Data will be null if error is present.
   GetWaitTimes: (
     callback?: (error: Error, data: WaitTimesResult) => void
   ) => Promise<WaitTimesResult>;
 
   GetWaitTimesPromise: () => Promise<WaitTimesResult>;
 
-  /** 
-     * Fetch the ride data for the requested ID. If it doesn't exist, add a new ride to our park's ride set
-     */
+  // Fetch the ride data for the requested ID. If it doesn't exist, add a new ride to our park's ride set
   GetRideObject: (
-    ride?: {
+    ride: {
       id: string;
       name: string;
     }
-  ) => Ride;
+  ) => Ride | null;
 
-  /**
-    * Fetch the ride data for the requested ID. If it doesn't exist, returns null
-    */
+  // Fetch the ride data for the requested ID. If it doesn't exist, returns null
   FindRideObject: (
-    ride?: {
+    ride: {
       id: string;
     }
   ) => Ride | null;
 
+  // Data will be null if error is present.
   GetOpeningTimes: (
     callback?: (error: Error, data: OpeningTimesResult) => void
   ) => Promise<OpeningTimesResult>;
@@ -242,25 +234,6 @@ declare class Schedule {
   ) => ScheduleData[];
 }
 
-declare interface ScheduleRaw {
-  dates: Map<number, ScheduleData>;
-  datesSpecial: Map<number, SpecialScheduleData[]>;
-}
-
-declare interface ScheduleData {
-  date: moment.Moment;
-  openingTime: moment.Moment;
-  closingTime: moment.Moment;
-  type: ScheduleType;
-  special?: SpecialScheduleData[];
-}
-
-declare interface SpecialScheduleData {
-  openingTime: moment.Moment;
-  closingTime: moment.Moment;
-  type: string;
-}
-
 // https://github.com/cubehouse/themeparks/blob/master/lib/ride.js
 declare class Ride {
   constructor(options: { ride_id?: string; ride_name?: number });
@@ -270,7 +243,7 @@ declare class Ride {
   Name: string;
   WaitTime: number;
   FastPass: boolean;
-  FastPassReturnTimeAvailable: boolean;
+  FastPassReturnTimeAvailable: boolean | undefined;
   // The set for this is a moment
   FastPassReturnTimeStart: string;
   // The set for this is a moment.
@@ -284,7 +257,7 @@ declare class Ride {
   fromJSON: (rideData: RideData) => void;
 }
 
-declare interface RideData {
+interface RideData {
   id: string | number;
   name: string;
   active: boolean;
@@ -292,7 +265,7 @@ declare interface RideData {
   fastPass: boolean;
   lastUpdate: number | undefined;
   status: RideStatus;
-  schedule: ScheduleData;
+  schedule?: ScheduleData;
   fastPassReturnTime?: {
     startTime: string;
     endTime: string;
@@ -300,14 +273,21 @@ declare interface RideData {
   };
 }
 
-declare enum RideStatus {
-  "Operating",
-  "Down",
-  "Closed",
-  "Refurbishment"
+interface ScheduleRaw {
+  dates: Map<number, ScheduleData>;
+  datesSpecial: Map<number, SpecialScheduleData[]>;
 }
 
-declare enum ScheduleType {
-  "Operating",
-  "Closed"
+interface ScheduleData {
+  date: moment.Moment;
+  openingTime: moment.Moment;
+  closingTime: moment.Moment;
+  type: ScheduleType;
+  special?: SpecialScheduleData[];
+}
+
+interface SpecialScheduleData {
+  openingTime: moment.Moment;
+  closingTime: moment.Moment;
+  type: string;
 }
