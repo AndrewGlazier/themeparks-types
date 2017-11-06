@@ -1,0 +1,19 @@
+{
+  "name": "types-themeparks",
+  "version": "1.0.0",
+  "repository": "https://github.com/JonJam/types-themeparks.git",
+  "license": "MIT",
+  "types": "types",
+  "devDependencies": {
+    "@types/cache-manager": "^1.2.5",
+    "@types/moment": "^2.13.0",
+    "dtslint": "^0.2.0"
+  },
+  "scripts": {
+    "dtslint": "dtslint types/themeparks"
+  },
+  "dependencies": {
+    "cache-manager": "^2.5.0",
+    "moment": "^2.19.1"
+  }
+}
