@@ -120,13 +120,13 @@ park.GetOpeningTimes((error, data) => {
   // $ExpectType ScheduleData[]
   data;
 
-  // $ExpectType Moment
+  // $ExpectType string
   data[0].date;
 
-  // $ExpectType Moment
+  // $ExpectType string
   data[0].openingTime;
 
-  // $ExpectType Moment
+  // $ExpectType string
   data[0].closingTime;
 
   // $ExpectType ScheduleType

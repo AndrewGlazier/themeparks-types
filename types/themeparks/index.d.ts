@@ -279,15 +279,15 @@ interface ScheduleRaw {
 }
 
 interface ScheduleData {
-  date: moment.Moment;
-  openingTime: moment.Moment;
-  closingTime: moment.Moment;
+  date: string;
+  openingTime: string;
+  closingTime: string;
   type: ScheduleType;
   special?: SpecialScheduleData[];
 }
 
 interface SpecialScheduleData {
-  openingTime: moment.Moment;
-  closingTime: moment.Moment;
+  openingTime: string;
+  closingTime: string;
   type: string;
 }
