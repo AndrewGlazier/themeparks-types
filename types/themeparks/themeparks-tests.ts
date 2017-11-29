@@ -1,6 +1,6 @@
 import themeparks = require("themeparks");
 
-// $ExpectType typeof Park
+// $ExpectType Park
 themeparks.Parks.AltonTowers;
 
 // $ExpectType Park

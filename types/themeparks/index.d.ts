@@ -7,100 +7,63 @@
 import * as moment from "moment";
 import cacheManger = require("cache-manager");
 
-export = themeparks;
-
-type ParkClass = typeof Park;
+// tslint:disable-next-line:strict-export-declare-modifiers
 type WaitTimesResult = RideData[];
+// tslint:disable-next-line:strict-export-declare-modifiers
 type OpeningTimesResult = ScheduleData[];
 
-declare enum RideStatus {
+export enum RideStatus {
   Operating = "Operating",
   Down = "Down",
   Closed = "Closed",
   Refurbishment = "Refurbishment"
 }
 
-declare enum ScheduleType {
+export enum ScheduleType {
   Operating = "Operating",
   Closed = "Closed"
 }
 
-declare const themeparks: {
-  AllParks: ParkClass[];
-  Parks: {
-    AltonTowers: ParkClass;
-    AsterixPark: ParkClass;
-    BuschGardensTampaBay: ParkClass;
-    BuschGardensWilliamsburg: ParkClass;
-    CanadasWonderland: ParkClass;
-    Carowinds: ParkClass;
-    CedarPoint: ParkClass;
-    ChessingtonWorldOfAdventures: ParkClass;
-    DisneylandParisMagicKingdom: ParkClass;
-    DisneylandParisWaltDisneyStudios: ParkClass;
-    DisneylandResortCaliforniaAdventure: ParkClass;
-    DisneylandResortMagicKingdom: ParkClass;
-    Efteling: ParkClass;
-    EuropaPark: ParkClass;
-    HersheyPark: ParkClass;
-    HongKongDisneyland: ParkClass;
-    KingsIsland: ParkClass;
-    KnottsBerryFarm: ParkClass;
-    LaRondeMontreal: ParkClass;
-    SeaworldOrlando: ParkClass;
-    SeaworldSanAntonio: ParkClass;
-    SeaworldSanDiego: ParkClass;
-    SesamePlace: ParkClass;
-    ShanghaiDisneyResortMagicKingdom: ParkClass;
-    SixFlagsAmerica: ParkClass;
-    SixFlagsDiscoveryKingdom: ParkClass;
-    SixFlagsFiestaTexas: ParkClass;
-    SixFlagsGreatAdventure: ParkClass;
-    SixFlagsGreatAmerica: ParkClass;
-    SixFlagsHurricaneHarborArlington: ParkClass;
-    SixFlagsHurricaneHarborJackson: ParkClass;
-    SixFlagsHurricaneHarborLosAngeles: ParkClass;
-    SixFlagsMagicMountain: ParkClass;
-    SixFlagsMexico: ParkClass;
-    SixFlagsNewEngland: ParkClass;
-    SixFlagsOverGeorgia: ParkClass;
-    SixFlagsOverTexas: ParkClass;
-    SixFlagsStLouis: ParkClass;
-    SixFlagsWhiteWaterAtlanta: ParkClass;
-    TheGreatEscape: ParkClass;
-    ThorpePark: ParkClass;
-    TokyoDisneyResortDisneySea: ParkClass;
-    TokyoDisneyResortMagicKingdom: ParkClass;
-    UniversalIslandsOfAdventure: ParkClass;
-    UniversalStudiosFlorida: ParkClass;
-    UniversalStudiosHollywood: ParkClass;
-    UniversalStudiosSingapore: ParkClass;
-    UniversalVolcanoBay: ParkClass;
-    WaltDisneyWorldAnimalKingdom: ParkClass;
-    WaltDisneyWorldEpcot: ParkClass;
-    WaltDisneyWorldHollywoodStudios: ParkClass;
-    WaltDisneyWorldMagicKingdom: ParkClass;
+export interface RideData {
+  id: string | number;
+  name: string;
+  active: boolean;
+  waitTime: number;
+  fastPass: boolean;
+  lastUpdate: number | undefined;
+  status: RideStatus;
+  schedule?: ScheduleData;
+  fastPassReturnTime?: {
+    startTime: string;
+    endTime: string;
+    lastUpdate: number | undefined;
   };
-  Settings: {
-    // This is an implementation of Cache from cache-manager.
-    Cache: any;
-    DefaultCacheOpeningTimesLength: number;
-    DefaultCacheWaitTimesLength: number;
-    DefaultDateFormat: string;
-    DefaultOpenTimeout: number;
-    DefaultParkName: string;
-    DefaultParkTimeFormat: string | null;
-    DefaultParkTimezone: string;
-    DefaultReadTimeout: number;
-    DefaultScheduleDays: number;
-    DefaultTimeFormat: string;
-    ProxyURL: string | null;
-  };
-};
+}
+
+export interface ScheduleRaw {
+  dates: Map<number, ScheduleData>;
+  datesSpecial: Map<number, SpecialScheduleData[]>;
+}
+
+export interface ScheduleData {
+  date: string;
+  openingTime: string;
+  closingTime: string;
+  type: ScheduleType;
+  special?: SpecialScheduleData[];
+}
+
+export interface SpecialScheduleData {
+  openingTime: string;
+  closingTime: string;
+  type: string;
+}
 
 // Source: https://github.com/cubehouse/themeparks/blob/master/lib/park.js
-declare class Park {
-  constructor(options?: {
+// As themeparks doesn't export this class using interface to export type only.
+export interface Park {
+  // tslint:disable-next-line:no-misused-new
+  new (options?: {
     name?: string;
     timezone?: string;
     timeFormat?: string;
@@ -111,7 +74,7 @@ declare class Park {
     longitude?: number;
     useragent?: string;
     scheduleDaysToReturn?: number;
-  });
+  }): Park;
 
   // There are actually implemented as get only Accessors but TypeScript doesn't support
   // these in declaration files: https://github.com/Microsoft/TypeScript/issues/10969#issuecomment-248192537
@@ -170,8 +133,10 @@ declare class Park {
 }
 
 // Source: https://github.com/cubehouse/themeparks/blob/master/lib/geoLocation.js
-declare class GeoLocation {
-  constructor(location: { longitude?: number; latitude?: number });
+// As themeparks doesn't export this class using interface to export type only.
+export interface GeoLocation {
+  // tslint:disable-next-line:no-misused-new
+  new (location: { longitude?: number; latitude?: number }): GeoLocation;
 
   // There are actually implemented as get only Accessors but TypeScript doesn't support
   // these in declaration files: https://github.com/Microsoft/TypeScript/issues/10969#issuecomment-248192537
@@ -180,18 +145,21 @@ declare class GeoLocation {
   Longitude: string;
   LongitudeRaw: number;
 
-  static RandomBetween: (
-    locationA: GeoLocation,
-    locationB: GeoLocation
-  ) => GeoLocation;
+  // Interfaces don't allow static methods
+  // static RandomBetween: (
+  //   locationA: GeoLocation,
+  //   locationB: GeoLocation
+  // ) => GeoLocation;
 
   toGoogleMaps: () => string;
   toString: () => string;
 }
 
 // https://github.com/cubehouse/themeparks/blob/master/lib/schedule.js
-declare class Schedule {
-  constructor(scheduleConfig?: { dateFormat?: string; timeFormat?: number });
+// As themeparks doesn't export this class using interface to export type only.
+export interface Schedule {
+  // tslint:disable-next-line:no-misused-new
+  new (scheduleConfig?: { dateFormat?: string; timeFormat?: number }): Schedule;
 
   // There are actually implemented as get only Accessors but TypeScript doesn't support
   // these in declaration files: https://github.com/Microsoft/TypeScript/issues/10969#issuecomment-248192537
@@ -236,8 +204,10 @@ declare class Schedule {
 }
 
 // https://github.com/cubehouse/themeparks/blob/master/lib/ride.js
-declare class Ride {
-  constructor(options: { ride_id?: string; ride_name?: number });
+// As themeparks doesn't export this class using interface to export type only.
+export interface Ride {
+  // tslint:disable-next-line:no-misused-new
+  new (options: { ride_id?: string; ride_name?: number }): Ride;
 
   // There are actually implemented as get only Accessors but TypeScript doesn't support
   // these in declaration files: https://github.com/Microsoft/TypeScript/issues/10969#issuecomment-248192537
@@ -258,37 +228,75 @@ declare class Ride {
   fromJSON: (rideData: RideData) => void;
 }
 
-interface RideData {
-  id: string | number;
-  name: string;
-  active: boolean;
-  waitTime: number;
-  fastPass: boolean;
-  lastUpdate: number | undefined;
-  status: RideStatus;
-  schedule?: ScheduleData;
-  fastPassReturnTime?: {
-    startTime: string;
-    endTime: string;
-    lastUpdate: number | undefined;
-  };
-}
+export const AllParks: Park[];
 
-interface ScheduleRaw {
-  dates: Map<number, ScheduleData>;
-  datesSpecial: Map<number, SpecialScheduleData[]>;
-}
+export const Parks: {
+  AltonTowers: Park;
+  AsterixPark: Park;
+  BuschGardensTampaBay: Park;
+  BuschGardensWilliamsburg: Park;
+  CanadasWonderland: Park;
+  Carowinds: Park;
+  CedarPoint: Park;
+  ChessingtonWorldOfAdventures: Park;
+  DisneylandParisMagicKingdom: Park;
+  DisneylandParisWaltDisneyStudios: Park;
+  DisneylandResortCaliforniaAdventure: Park;
+  DisneylandResortMagicKingdom: Park;
+  Efteling: Park;
+  EuropaPark: Park;
+  HersheyPark: Park;
+  HongKongDisneyland: Park;
+  KingsIsland: Park;
+  KnottsBerryFarm: Park;
+  LaRondeMontreal: Park;
+  SeaworldOrlando: Park;
+  SeaworldSanAntonio: Park;
+  SeaworldSanDiego: Park;
+  SesamePlace: Park;
+  ShanghaiDisneyResortMagicKingdom: Park;
+  SixFlagsAmerica: Park;
+  SixFlagsDiscoveryKingdom: Park;
+  SixFlagsFiestaTexas: Park;
+  SixFlagsGreatAdventure: Park;
+  SixFlagsGreatAmerica: Park;
+  SixFlagsHurricaneHarborArlington: Park;
+  SixFlagsHurricaneHarborJackson: Park;
+  SixFlagsHurricaneHarborLosAngeles: Park;
+  SixFlagsMagicMountain: Park;
+  SixFlagsMexico: Park;
+  SixFlagsNewEngland: Park;
+  SixFlagsOverGeorgia: Park;
+  SixFlagsOverTexas: Park;
+  SixFlagsStLouis: Park;
+  SixFlagsWhiteWaterAtlanta: Park;
+  TheGreatEscape: Park;
+  ThorpePark: Park;
+  TokyoDisneyResortDisneySea: Park;
+  TokyoDisneyResortMagicKingdom: Park;
+  UniversalIslandsOfAdventure: Park;
+  UniversalStudiosFlorida: Park;
+  UniversalStudiosHollywood: Park;
+  UniversalStudiosSingapore: Park;
+  UniversalVolcanoBay: Park;
+  WaltDisneyWorldAnimalKingdom: Park;
+  WaltDisneyWorldEpcot: Park;
+  WaltDisneyWorldHollywoodStudios: Park;
+  WaltDisneyWorldMagicKingdom: Park;
+};
 
-interface ScheduleData {
-  date: string;
-  openingTime: string;
-  closingTime: string;
-  type: ScheduleType;
-  special?: SpecialScheduleData[];
-}
-
-interface SpecialScheduleData {
-  openingTime: string;
-  closingTime: string;
-  type: string;
-}
+export const Settings: {
+  // This is an implementation of Cache from cache-manager.
+  Cache: any;
+  DefaultCacheOpeningTimesLength: number;
+  DefaultCacheWaitTimesLength: number;
+  DefaultDateFormat: string;
+  DefaultOpenTimeout: number;
+  DefaultParkName: string;
+  DefaultParkTimeFormat: string | null;
+  DefaultParkTimezone: string;
+  DefaultReadTimeout: number;
+  DefaultScheduleDays: number;
+  DefaultTimeFormat: string;
+  ProxyURL: string | null;
+};
