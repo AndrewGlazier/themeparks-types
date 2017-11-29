@@ -2,6 +2,7 @@
 // Project: https://github.com/cubehouse/themeparks#readme
 // Definitions by: Jonathan Harrison <https://github.com/JonJam>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 2.4
 
 import * as moment from "moment";
 import cacheManger = require("cache-manager");
@@ -13,15 +14,15 @@ type WaitTimesResult = RideData[];
 type OpeningTimesResult = ScheduleData[];
 
 declare enum RideStatus {
-  "Operating",
-  "Down",
-  "Closed",
-  "Refurbishment"
+  Operating = "Operating",
+  Down = "Down",
+  Closed = "Closed",
+  Refurbishment = "Refurbishment"
 }
 
 declare enum ScheduleType {
-  "Operating",
-  "Closed"
+  Operating = "Operating",
+  Closed = "Closed"
 }
 
 declare const themeparks: {
